@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Alex Asemota</title>
-    <link>https://example.org/tags/</link>
+    <link>https://alexasemota.netlify.app/tags/</link>
     <description>Recent content in Tags on Alex Asemota</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 18 Feb 2025 20:15:48 -0800</lastBuildDate>
-    <atom:link href="https://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://alexasemota.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CUPED</title>
-      <link>https://example.org/tags/cuped/</link>
+      <link>https://alexasemota.netlify.app/tags/cuped/</link>
       <pubDate>Tue, 18 Feb 2025 20:15:48 -0800</pubDate>
-      <guid>https://example.org/tags/cuped/</guid>
+      <guid>https://alexasemota.netlify.app/tags/cuped/</guid>
       <description></description>
     </item>
     <item>
       <title>Regression Adjustment</title>
-      <link>https://example.org/tags/regression-adjustment/</link>
+      <link>https://alexasemota.netlify.app/tags/regression-adjustment/</link>
       <pubDate>Tue, 18 Feb 2025 20:15:48 -0800</pubDate>
-      <guid>https://example.org/tags/regression-adjustment/</guid>
+      <guid>https://alexasemota.netlify.app/tags/regression-adjustment/</guid>
       <description></description>
     </item>
   </channel>
