@@ -8,6 +8,7 @@ subtitle = "Portfolio and blog theme for Hugo."
 description = "Demo site for Jughead, a portfolio and blog theme for Hugo."
 colourScheme = "blue"
 mainSections = ["blog", "links"]
+math = true
 
 [[menu.main]]
 name = "Resume"
@@ -27,5 +28,4 @@ weight = 1
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
           inline = [['\(', '\)']]
-[params]
-  math = true
+  
