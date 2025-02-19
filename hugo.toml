@@ -4,6 +4,11 @@ title = 'Alex Asemota'
 theme = 'jughead'
 
 [[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
 name = "Resume"
 url = "/resume"
 weight = 1
