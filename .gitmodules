@@ -1,0 +1,3 @@
+[submodule "themes/jughead"]
+	path = themes/jughead
+	url = https://github.com/ananthb/jughead.git

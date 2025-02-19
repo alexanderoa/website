@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Variance Reduction on Alex Asemota</title>
+    <link>https://example.org/categories/variance-reduction/</link>
+    <description>Recent content in Variance Reduction on Alex Asemota</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 18 Feb 2025 20:15:48 -0800</lastBuildDate>
+    <atom:link href="https://example.org/categories/variance-reduction/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploring CUPED</title>
+      <link>https://example.org/blog/cuped/</link>
+      <pubDate>Tue, 18 Feb 2025 20:15:48 -0800</pubDate>
+      <guid>https://example.org/blog/cuped/</guid>
+      <description>&lt;p&gt;Imagine for a moment that you are a data scientist. A few engineers at your company have proposed a new feature, and you are tasked with running an experiment to assess the feature&amp;rsquo;s potential impact on revenue. The experiment runs smoothly, and the returns seem promising. However, when you reach the analysis stage, you get a p-value of 0.07, just above the typical p&amp;lt;0.05 threshold for significance. Hesitant to advocate for the feature without stronger evidence, you collect more data and obtain a p-value below 0.05.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

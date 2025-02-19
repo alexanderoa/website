@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Exploring CUPED |Alex Asemota</title>
+
+
+
+
+
+  <meta name="description" content="Imagine for a moment that you are a data scientist. A few engineers at your company have proposed a new feature, and you are tasked with running an experiment to assess the feature’s potential impact on revenue. The experiment runs smoothly, and the returns seem promising. However, when you reach the analysis stage, you get a p-value of 0.07, just above the typical p&lt;0.05 threshold for significance. Hesitant to advocate for the feature without stronger evidence, you collect more data and obtain a p-value below 0.05.
+" />
+
+
+
+<meta property="og:url" content="http://localhost:1313/blog/trial/">
+  <meta property="og:site_name" content="Alex Asemota">
+  <meta property="og:title" content="Exploring CUPED">
+  <meta property="og:description" content="Imagine for a moment that you are a data scientist. A few engineers at your company have proposed a new feature, and you are tasked with running an experiment to assess the feature’s potential impact on revenue. The experiment runs smoothly, and the returns seem promising. However, when you reach the analysis stage, you get a p-value of 0.07, just above the typical p&lt;0.05 threshold for significance. Hesitant to advocate for the feature without stronger evidence, you collect more data and obtain a p-value below 0.05.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2025-02-18T20:15:48-08:00">
+    <meta property="article:modified_time" content="2025-02-18T20:15:48-08:00">
+    <meta property="article:tag" content="Regression Adjustment">
+    <meta property="article:tag" content="CUPED">
+
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Exploring CUPED">
+  <meta name="twitter:description" content="Imagine for a moment that you are a data scientist. A few engineers at your company have proposed a new feature, and you are tasked with running an experiment to assess the feature’s potential impact on revenue. The experiment runs smoothly, and the returns seem promising. However, when you reach the analysis stage, you get a p-value of 0.07, just above the typical p&lt;0.05 threshold for significance. Hesitant to advocate for the feature without stronger evidence, you collect more data and obtain a p-value below 0.05.">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="http://localhost:1313/css/feather-icon.css"
+    />
+  
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="http://localhost:1313/css/footer.css"
+    />
+  
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="http://localhost:1313/css/resume.css"
+    />
+  
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="http://localhost:1313/css/site-header.css"
+    />
+  
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="http://localhost:1313/css/site.css"
+    />
+  
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="http://localhost:1313/picocss/pico.css"
+    />
+  
+
+
+
+
+    
+    
+      
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_AMS-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Caligraphic-Bold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Caligraphic-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Fraktur-Bold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Fraktur-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Main-Bold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Main-BoldItalic.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Main-Italic.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Main-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Math-BoldItalic.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Math-Italic.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_SansSerif-Bold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_SansSerif-Italic.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_SansSerif-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Script-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Size1-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Size2-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Size3-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Size4-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="preload"
+    href="http://localhost:1313/katex/fonts/KaTeX_Typewriter-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+
+
+
+  <link rel="stylesheet" href="http://localhost:1313/katex/katex.css" />
+
+
+
+
+
+
+
+<script type="module">
+  import katex from "/katex/katex.mjs";
+  import renderMathInElement from "/katex/contrib/auto-render.mjs";
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+    });
+  });
+</script>
+
+    
+
+
+    
+    
+  </head>
+
+  <body>
+    <header class="container">
+  <nav id="site-nav">
+    <ul>
+      <li>
+        <h1><a href="http://localhost:1313/">Alex Asemota</a></h1>
+      </li>
+    </ul>
+    <ul>
+      
+        <li><a href="/blog">Blog</a></li>
+      
+        <li><a href="/resume">Resume</a></li>
+      
+    </ul>
+  </nav>
+
+  </header>
+
+    
+  <main class="container">
+    <article>
+      <header>
+        <h1>Exploring CUPED</h1>
+        <section>
+          Posted on
+          <time datetime="2025-18-18 20:15">
+            Feb 18, 2025
+          </time>
+          
+          <p>Estimated reading time: 10 minutes</p>
+        </section>
+
+        
+          <section>
+            <h2>Table of Contents</h2>
+            <aside><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#preliminaries">Preliminaries</a></li>
+        <li><a href="#the-default-difference-in-means">The Default: Difference-in-Means</a></li>
+        <li><a href="#simple-yet-powerful-cuped">Simple Yet Powerful: CUPED</a></li>
+        <li><a href="#dim-and-cuped-in-python">DiM and CUPED in Python</a></li>
+        <li><a href="#what-about-regression-adjustment">What About Regression Adjustment?</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></aside>
+          </section>
+        
+      </header>
+
+      <main><p>Imagine for a moment that you are a data scientist. A few engineers at your company have proposed a new feature, and you are tasked with running an experiment to assess the feature&rsquo;s potential impact on revenue. The experiment runs smoothly, and the returns seem promising. However, when you reach the analysis stage, you get a p-value of 0.07, just above the typical p&lt;0.05 threshold for significance. Hesitant to advocate for the feature without stronger evidence, you collect more data and obtain a p-value below 0.05.</p>
+<p>The scenario presented above is less than ideal. Each data point we collect costs time and money, so we would like to minimize the amount of data we need to make strong statistical claims. In general, we can only increase our statistical confidence in two ways: collect more data or decrease variance in our estimates. Since we want to minimize type spent in experimentation (and therefore provide better features faster), we need to think about decreasing the variance in our estimates. There are <em>lots</em> of ways to do this, varying from changes in experimental design to refining our estimator. Here I&rsquo;m going to focus on CUPED, also known as control variates, a simple way to reduce variance using pre-experimental data.</p>
+<p>This post is inspired significantly by a <a href="https://matteocourthoud.github.io/post/cuped/">blog post</a> by Matteo Courthoud. The writing and code is my own, but I&rsquo;m largely replicating his work!</p>
+<h3 id="preliminaries">Preliminaries</h3>
+<p>Let&rsquo;s start with some notation. To keep this post brief, I&rsquo;m going to assume some familiarity with causal inference and the potential outcomes framework. Let $Y$ be our outcome of interest and $T$ be our treatment indicator such that $T=0$ is the control group and $T=1$ denotes the treatment group. Suppose we have $n$ units in our experiment. In a simple random experiment, we randomly assign $n_t$ units to treatment and assign the remainder, $n_c=n-n_t$, to control.</p>
+<p>In causal inference, the most common quantity of interest is the <em>average treatment effect</em>, that is the difference in the average outcome of treatment and control. We use $\tau$ to denote the true average treatment effect (ATE).</p>
+<h3 id="the-default-difference-in-means">The Default: Difference-in-Means</h3>
+$$\hat{\tau}_{diff} = \frac{1}{n_t}\sum_{i=1}^nY_iT_i - \frac{1}{n_c}\sum_{i=1}^nY_i(1-T_i)$$$$Y = \hat{\alpha} + \hat{\tau}_{reg} T$$<p>
+to obtain \(\hat{\tau}_{diff}=\hat{\tau}_{reg}\). This estimator, referred to as the difference-in-means (DiM) method, is compelling in its simplicity. However, DiM does not provide any mechanism for reducing variance, instead requiring more data to reduce uncertainty. In most experiments, we have some information that is related to the outcome. If that information is independent of the treatment assignment, we can use it to reduce uncertainty in our estimate. For example, in a clinical trial, a patient&rsquo;s age may be related to their risk of disease. When performing our analysis, we want to account for the relationship between age and disease risk to maximize efficiency.</p>
+<h3 id="simple-yet-powerful-cuped">Simple Yet Powerful: CUPED</h3>
+<p>Here is where CUPED comes to the rescue. Suppose we have some variable $X$ that we&rsquo;ve measured before the experiment begins. In the simplest terms, CUPED subtracts out the variance in $Y$ that can be explained by $X$, thereby reducing variance in our estimates. $X$ here is referred to as a <em>control variate</em>. Given a control variate $X$, we define $\tilde{Y} = Y - \theta(X-\mathbb{E}[X])$, where $\theta$ is any constant. We then apply DiM to $\tilde{Y}$:</p>
+$$\hat{\tau}_{cv} =  \frac{1}{n_t}\sum_{i=1}^n\tilde{Y}_iT_i - \frac{1}{n_c}\sum_{i=1}^n\tilde{Y}_i(1-T_i)$$<p>
+The resulting estimator \(\hat{\tau}_{cv}\) is an unbiased estimator with \(var(\hat{\tau}_{cv}) \leq var(\hat{\tau}_{diff})\).</p>
+<p>This feels a little too easy, right? We get reduced variance by just subtracting something from $Y$? That&rsquo;s part of the beauty of CUPED! The theory is simple to understand as well.</p>
+$$\hat{\tau}_{cv} =  \frac{1}{n_t}\sum_{i=1}^n(Y_i - \theta(X-\mathbb{E}[X]))T_i - \frac{1}{n_c}\sum_{i=1}^n(Y_i - \theta(X-\mathbb{E}[X]))(1-T_i)$$<p>
+Since we are using random assignment, and since $X$ is measured <em>before</em> the experiment, $\mathbb{E}[X|T=1] = \mathbb{E}[X|T=0]$. Therefore, we don&rsquo;t incur  bias due to imbalance between treatment and control. Moreover, $\mathbb{E}[X - \mathbb{E}[X]] = 0$, so we are adding a mean zero random variable, maintaining unbiasedness.</p>
+$$var(\tilde{Y}) = var(Y - \theta(X-\mathbb{E}[X])) = var(Y) + \theta^2var(X) - 2\theta cov(Y,X)$$<p>
+since $\mathbb{E}[X]$ is a constant. This equation tells us two things.</p>
+<ol>
+<li>We want to use a variable $X$ that is highly correlated with $Y$</li>
+<li>We want to pick a value for $\theta$ that minimizes $var(\tilde{Y})$</li>
+</ol>
+<p>Finding a suitable $X$ will vary based on the context of the problem. It turns out, however, that the best value for $\theta$ is $\frac{cov(Y,X)}{var(X)}$. This is the same as regressing $Y$ on $X$! Therefore, the procedure for CUPED simply adds another layer of linear regression to the DiM procedure above.</p>
+<h3 id="dim-and-cuped-in-python">DiM and CUPED in Python</h3>
+<p>Now that we&rsquo;ve talked about the theory, let&rsquo;s work through a practical example using simulation in Python. We&rsquo;re going to anchor our simulation in the approach laid out in the original paper by Deng et al. In particular, we are going to consider an online experiment on users of a platform. We want to evaluate whether our treatment has some impact on a metric $Y$. For each user, we measure $Y$ before triggering the experiment (pre-trigger) and after triggering the experiment (post-trigger). We&rsquo;ll refer to the pre- and post-trigger observations as $Y_{pre}$ and $Y_{post}$, respectively. $Y_{pre}$ should be strongly correlated with $Y_{post}$, even if the treatment effect is significant. Therefore, we use the pre-trigger values as the control variate.</p>
+<p>We start by importing the relevant packages and simulating a dataset.</p>
+<pre tabindex="0"><code>import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from cuped_utils import *
+data = cuped_generator(
+    sample_size = 500,
+    t_proportion = 0.5,
+    effect_size = 0.5,
+)
+</code></pre><p>In our dataset, we have a ground-truth treatment effect of 0.5. Additionally, we observe 500 units, and each unit has a 50% chance of being assigned to treatment.</p>
+<p>First, let&rsquo;s take a quick peek at our data.</p>
+<pre tabindex="0"><code>data.iloc[:6,:]
+</code></pre><p>&lsquo;Treatment&rsquo; contains the treatment indicator, &lsquo;Pre_trigger&rsquo; and &lsquo;Post_trigger&rsquo; are $Y_{pre}$ and $Y_{post}$, respectively, and &lsquo;Pre-normalized&rsquo; is $Y_{pre}-\mathbb{E}[Y_{pre}]$.</p>
+<p>Let&rsquo;s take a look at the estimates from DiM and CUPED. As mentioned above, we can calculated $\hat{\tau}_{diff}$ by regression $Y$ on $T$ with an intercept term. Note that <code>smf.ols()</code> automatically adds an intercept to the regression.</p>
+<pre tabindex="0"><code>reg = smf.ols(&#34;Post_trigger ~ Treatment&#34;,data).fit()
+reg.get_robustcov_results(&#39;HC2&#39;).summary(slim=True)
+</code></pre><p>The DiM estimate isn&rsquo;t far off, and the p-value is quite smaller that 0.05. So DiM would seem to suffice in this scenario!</p>
+$$\tilde{Y}_{post} = Y_{post} - \theta(Y_{pre} - \mathbb{E}[Y_{pre}])$$<p>
+marginalizing out the variance in \(Y_{post}\) attributable to \(Y_{pre}\). Finally, we perform DiM on \(\tilde{Y}_{post}\) by regressing \(\tilde{Y}_{post}\) on \(T\).</p>
+<pre tabindex="0"><code>cuped_lm = sm.OLS(
+  data[&#39;Post_trigger&#39;], 
+  data[&#39;Pre_normalized&#39;]).fit()
+theta = cuped_lm.params[0]
+data[&#39;Post_cuped&#39;] = (data[&#39;Post_trigger&#39;] - 
+  theta*data[&#39;Pre_normalized&#39;])
+cuped_reg = smf.ols(&#34;Post_cuped ~ Treatment&#34;, data).fit()
+cuped_reg.get_robustcov_results(&#39;HC2&#39;).summary(slim=True)
+</code></pre><p>We can see that the standard error in CUPED is roughly half that of DiM! The CUPED confidence interval is half the length of the DiM confidence interval. These are huge gains for such a low-cost and simple method.</p>
+<h3 id="what-about-regression-adjustment">What About Regression Adjustment?</h3>
+<p>Okay, CUPED seems great, but it&rsquo;s also a relatively new idea. What were people doing before CUPED?</p>
+$$Y = \hat{\alpha} + \hat{\tau}_{adj_1} T + \hat{\beta} X$$$$Y = \hat{\alpha} + \hat{\tau}_{adj_2} T + \hat{\beta} X + \hat{\gamma} (X-\mathbb{E}[X])*T$$<p>
+which allows \(\hat{\tau}_{adj_2}\) to be unbiased [1].</p>
+<pre tabindex="0"><code>reg_adj = smf.ols(
+    formula=&#34;Post_trigger ~ Treatment + 
+      Pre_trigger + 
+      Treatment:Pre_normalized&#34;,
+    data=data).fit()
+reg_adj.get_robustcov_results(&#39;HC2&#39;).summary(slim=True)
+</code></pre><p>Surprisingly, CUPED and regression adjustment return very similar estimates and similar standard errors. To make sure this result isn&rsquo;t just a fluke of random chance, let&rsquo;s simulate a few thousand datasets. In particular, we&rsquo;ll look at the distribution of point estimates for difference-in-means, CUPED, and regression adjustment. If CUPED and regression adjustment perform similarly, we would expect their point estimate distributions to be roughly the same.</p>
+<pre tabindex="0"><code>n = 10000
+sample_size = 500
+simple, cuped, adjust = many_cuped_sims(n_sims=n)
+df = pd.DataFrame()
+simple_df = pd.DataFrame(
+  {&#39;label&#39;:[&#39;simple&#39;]*n, &#39;estimate&#39;:simple}
+  )
+cuped_df = pd.DataFrame(
+  {&#39;label&#39;:[&#39;cuped&#39;]*n, &#39;estimate&#39;:cuped}
+  )
+adjust_df = pd.DataFrame(
+  {&#39;label&#39;:[&#39;adjust&#39;]*n, &#39;estimate&#39;:adjust}
+  )
+
+df = df.append([simple_df, cuped_df, adjust_df])
+sns.kdeplot(x=&#39;estimate&#39;, hue = &#39;label&#39;, data=df)
+</code></pre><p><img src="/cuped_11_1.png" alt="png"></p>
+<p>We can see that CUPED and regression adjustment appear to have the same point estimate distribution.</p>
+<p>The results of our simulations beg the question, are CUPED and regression adjustment the same? The answer is somewhat nuanced. In the original 2013 paper by Deng et al., CUPED is conceptualized as not only including linear functions of $X$, but general functions $f(X)$ as well. We could define $\tilde{Y}_f = Y - \theta (f(X) - \mathbb{E}[f(X)])$, allowing us to correct for a variety of relationships between $Y$ and $X$.</p>
+<p>Deng et al. re-define and expand CUPED in a 2023 paper. In particular, they formulate CUPED as adding a mean-zero random variable, referred to as an &lsquo;augmentation&rsquo;, to any estimator of the ATE. To demonstrate the flexibility of their augmentation perspective, Deng et al. show that regression adjustment can be written as $\hat{\tau}_{diff} - \hat{\tau}_0$. Furthermore, we can show that (traditional) CUPED and regression adjustment (with an interaction term) are asymptotically equivalent! So at least asymptotically, CUPED and regression adjustment are indeed the same thing.</p>
+$$\begin{equation}
+\hat{\tau} = \hat{\tau}_{diff} - \hat{\tau}_0
+\end{equation}$$<p>
+where $\hat{\tau}_0$ is a function of $T$ and $X$, and $\mathbb{E}[\hat{\tau}_0]=0$. Equation (1) implies that essentially every reasonable estimator is a type of CUPED (i.e. augmented) estimator [2]. While this is a bit of an oversimplification, it&rsquo;s useful to think of ATE estimators as augmenting the DiM [3].</p>
+<p>An interesting consequence of Equation (1) is that many estimators are equivalent asymptotically. How should we choose between the many choices we have? Though estimators may behave similarly asymptotically, they typically have different behavior in finite samples. Therefore, we should consider the finite sample implications of our estimator before implementing it. Outside of finite sample behavior, the choice of estimator largely depends on context and personal preference.</p>
+<p>Let&rsquo;s focus on regression adjustment and CUPED. In small samples, CUPED will be able to obtain an estimate of $\theta$ since $\theta$ is estimated jointly for treatment and control. Regression adjustment with an interaction term, however, essentially performs separate regressions for treatment and control. So if the treatment group is small, we may get strange results. On the other hand, regression adjustment is more familiar to certain audiences, so presenting results using regression adjustment may be more natural.</p>
+<p>Okay, we&rsquo;ve covered a lot of ground! The main takeaways are:</p>
+<ol>
+<li>CUPED is a simple but powerful method to reduce variance</li>
+<li>CUPED and regression adjustment are asymptotically the same</li>
+<li>The choice between the two depends on context and personal taste</li>
+</ol>
+<p>Next time, we&rsquo;ll look into nonlinear adjustments and augmentations. I&rsquo;ll delve into a few approaches to using machine learning to perform causal inference and compare ML models to linear ones.</p>
+<h4 id="notes">Notes</h4>
+<p>[1] Note: We don&rsquo;t need to believe that our data-generating process is linear for regression adjustment to reduce variance and maintain unbiasedness. OLS finds the best linear projection from $X$ to $Y$ which will reduce variance even if the data themselves are not linearly related. If we use robust estiamtes of covariance, our p-values and confidence intervals will remain valid even with heteroskedastic residuals.</p>
+<p>[2] Note: Equation (1) is a result from semiparametric efficiency theory and has been known for a few decades. In some sense, it&rsquo;s unfair to call all reasonable estimators special cases of CUPED, since CUPED was only formulated in 2013. It may be more appropriate to call CUPED a specific way to frame semiparametric efficiency theory rather than the reverse.</p>
+<p>[3] Note: Semiparametric efficiency theory is the theoretical basis for using machine learning in causal inference. I gloss over it here for brevity, but I may discuss it in more detail in a future post. Additionally, the term &lsquo;reasonable&rsquo; can be described more rigorously. If you would like to learn more, the Tsiatis et al paper below has some useful discussion of the theory I&rsquo;ve introduced so far.</p>
+<h4 id="citations">Citations</h4>
+<p>Matteo Courthoud. 2024. Understanding CUPED.</p>
+<ul>
+<li><a href="https://matteocourthoud.github.io/post/cuped/">https://matteocourthoud.github.io/post/cuped/</a></li>
+</ul>
+<p>Alex Deng, Ya Xu, Ron Kohavi, and Toby Walker. 2013. Improving the sensitivity of online controlled experiments by utilizing pre-experiment data. In Proceedings of the sixth ACM international conference on Web search and data mining (WSDM &lsquo;13). Association for Computing Machinery, New York, NY, USA, 123–132. <a href="https://doi.org/10.1145/2433396.2433413">https://doi.org/10.1145/2433396.2433413</a></p>
+<ul>
+<li><a href="https://dl.acm.org/doi/abs/10.1145/2433396.2433413">https://dl.acm.org/doi/abs/10.1145/2433396.2433413</a></li>
+</ul>
+<p>Alex Deng, Luke Hagar, Nathaniel Stevens, Tatiana Xifara, Lo-Hua Yuan, &amp; Amit Gandhi. 2023. From Augmentation to Decomposition: A New Look at CUPED in 2023.</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2312.02935">https://arxiv.org/abs/2312.02935</a></li>
+</ul>
+<p>Winston Lin. 2013. Agnostic notes on regression adjustments to experimental data: Reexamining Freedman’s critique. The Annals of Applied Statistics, Ann. Appl. Stat. 7(1), 295-318.</p>
+<ul>
+<li><a href="https://projecteuclid.org/journals/annals-of-applied-statistics/volume-7/issue-1/Agnostic-notes-on-regression-adjustments-to-experimental-data--Reexamining/10.1214/12-AOAS583.full">https://projecteuclid.org/journals/annals-of-applied-statistics/volume-7/issue-1/Agnostic-notes-on-regression-adjustments-to-experimental-data--Reexamining/10.1214/12-AOAS583.full</a></li>
+</ul>
+<p>Anastasios A Tsiatis, Marie Davidian, Min Zhang, Xiaomin Lu . 2008. Covariate adjustment for two-sample treatment comparisons in randomized clinical trials: a principled yet flexible approach. Stat Med. doi: 10.1002/sim.3113. PMID: 17960577; PMCID: PMC2562926.</p>
+<ul>
+<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2562926/">https://pmc.ncbi.nlm.nih.gov/articles/PMC2562926/</a></li>
+</ul>
+</main>
+
+      <footer>
+        <section class="footer-explore">
+  
+    <small><strong>Tags</strong></small>
+    <nav>
+      <ul>
+        
+          <li>
+            <small>
+              <a href="/tags/regression-adjustment/">Regression Adjustment</a>
+            </small>
+          </li>
+        
+          <li>
+            <small>
+              <a href="/tags/cuped/">CUPED</a>
+            </small>
+          </li>
+        
+      </ul>
+    </nav>
+  
+  
+    <small><strong>Categories</strong></small>
+    <nav>
+      <ul>
+        
+          <li>
+            <small>
+              <a href="/categories/causal-inference/">Causal Inference</a>
+            </small>
+          </li>
+        
+          <li>
+            <small>
+              <a href="/categories/estimators/">Estimators</a>
+            </small>
+          </li>
+        
+          <li>
+            <small>
+              <a href="/categories/variance-reduction/">Variance Reduction</a>
+            </small>
+          </li>
+        
+      </ul>
+    </nav>
+  
+</section>
+
+
+        
+          <section>
+            
+          </section>
+        
+      </footer>
+    </article>
+  </main>
+
+    <footer class="container">
+  <section class="footer-explore">
+    <h4>Explore</h4>
+    
+      
+        
+          <h5>
+            <a href="/categories">Categories</a>
+          </h5>
+          <nav>
+            <ul>
+              
+                <li>
+                  <small>
+                    <a href="http://localhost:1313/categories/causal-inference/">Causal Inference</a>
+                  </small>
+                </li>
+              
+                <li>
+                  <small>
+                    <a href="http://localhost:1313/categories/estimators/">Estimators</a>
+                  </small>
+                </li>
+              
+                <li>
+                  <small>
+                    <a href="http://localhost:1313/categories/variance-reduction/">Variance Reduction</a>
+                  </small>
+                </li>
+              
+            </ul>
+          </nav>
+        
+      
+        
+          <h5>
+            <a href="/tags">Tags</a>
+          </h5>
+          <nav>
+            <ul>
+              
+                <li>
+                  <small>
+                    <a href="http://localhost:1313/tags/cuped/">CUPED</a>
+                  </small>
+                </li>
+              
+                <li>
+                  <small>
+                    <a href="http://localhost:1313/tags/regression-adjustment/">Regression Adjustment</a>
+                  </small>
+                </li>
+              
+            </ul>
+          </nav>
+        
+      
+    
+  </section>
+
+  <section>
+    <p>
+
+
+      <small>
+        ©
+        2025
+        .
+      </small>
+      
+    </p>
+  </section>
+</footer>
+
+  </body>
+</html>

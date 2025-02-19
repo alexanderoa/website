@@ -1,0 +1,118 @@
+{
+  "basics": {
+    "name": "Alexander Asemota",
+    "label": "Statistician",
+    "image": "",
+    "email": "alexander[dot]asemota[at]gmail[dot]com",
+    "url": "https://alexasemota.netlify.app",
+    "summary": "Hi, and welcome to my website! I’m a PhD candidate in the statistics department at UC Berkeley. My work broadly relates to fairness, transparency, explainability, and auditing of computational systems. Within this realm, I’ve worked on improving counterfactual explanations for ML models, developed methods for inference on fairness, and proposed and approach to rigorously assess software for DNA forensics. As a statistician, I am drawn to flexible methods that require few assumptions, particularly those that leverage machine learning models. Additionally, I’m interested in experimental design and causal inference, and I often apply concepts from these domains to the problems that I work on.",
+    "location": {
+      "city": "Oakland",
+      "countryCode": "US",
+      "region": "California"
+    },
+    "profiles": [{
+        "network": "GitHub",
+        "username": "alexanderoa",
+        "url": "https://github.com/alexanderoa"
+    },
+    {
+        "network": "LinkedIn",
+        "username" : "Alexander Asemota",
+        "url": "https://www.linkedin.com/in/alexander-asemota-8a9941129/"
+    }]
+  },
+  "work": [{
+      "name": "UC Berkeley",
+      "position": "Graduate Researcher",
+      "startDate": "2021-08-01",
+      "endDate": "2025-07-01",
+      "summary": "During graduate school, I worked on a variety of research problems leveraging my skills in statistics, data science, communication, and collaboration.",
+      "highlights": [
+          "Led innovative data science and statistics research projects from conception to completion",
+          "Independently iterated on solutions to research problems, focusing on feasibility for end users",
+          "Collaborated with domain experts, collating recommendations to drive impactful research",
+          "Presented research results to diverse audiences, clearly communicating important implications"
+      ]
+  },
+  {
+      "name": "UC Berkeley",
+      "position": "Teaching Assistant",
+      "startDate": "2024-01-01",
+      "endDate": "2024-05-01",
+      "summary": "I worked as a teaching assistant for Stat133, a introductory course for R with 180 students.",
+      "highlights": [
+          "Taught, managed, and mentored 60+ students in an introductory course for computing in R",
+          "Explained data science concepts to a diverse audience, accounting for a range of experience levels",
+          "Developed and refined assignments with professor and course staff"
+      ]
+  },
+  {
+      "name": "UC Berkeley",
+      "position": "AI Policy Hub Fellow",
+      "startDate": "2022-08-01",
+      "endDate": "2023-05-01",
+      "summary": "I was an inaugural member of the AI Policy Hub, a fellowship at UC Berkeley focused on developing public policy for AI.",
+      "highlights": [
+          "Generated AI policy proposals using expertise in statistics and machine learning",
+          "Incorporated feedback from researchers, policymakers, and colleagues",
+          "Integrated divergent stakeholder perspectives to develop mutually beneficial proposals"
+      ]
+  },
+  {
+      "name": "Upstart",
+      "position": "Data Science Intern",
+      "startDate": "2022-05-01",
+      "endDate": "2022-08-01",
+      "summary": "Upstart leverages AI to connect consumers with banks and credit unions for loans. I worked as a data science intern.",
+      "highlights": [
+          "Developed evaluation pipeline for production-level interpretable machine learning model",
+          "Trained production models at scale using Amazon Web Services",
+          "Implemented feature pipeline using in-house functions and SciKit-Learn pipelines",
+          "Presented benefits and drawbacks of interpretable model"
+      ]
+  }],
+  "education": [{
+      "institution": "University of California Berkeley",
+      "area": "Statistics",
+      "studyType": "PhD",
+      "startDate": "2020-08-01",
+      "endDate": "2025-05-01"
+  },
+  {
+      "institution": "Howard University",
+      "area": "Mathematics",
+      "studyType": "Bachelor",
+      "startDate": "2016-08-01",
+      "endDate": "2020-05-01"
+  }],
+  "publications": [{
+      "name": "Targeted Learning for Inference on Data Fairness",
+      "publisher": "Submitted to ACM FAccT 2025",
+      "releaseDate": "2024-02-01",
+      "url": "https://arxiv.org/abs/2502.04309",
+      "summary": ""
+  },
+  {
+      "name": "Beyond Forensic Feelings: A Prediction Framework for Analyzing Genotype Probabilities",
+      "publisher": "Submitted to ACM FAccT 2025",
+      "releaseDate": "2024-02-01",
+      "url": "",
+      "summary": ""
+  },
+  {
+      "name": "Using Longitudinal Data for Plausible Counterfactual Explanations",
+      "publisher": "KDD Workshop for Human-Interpretable AI",
+      "url": "https://human-interpretable-ai.github.io/assets/pdf/3_Using_Longitudinal_Data_for_.pdf",
+      "releaseDate": "2024-08-31",
+      "summary": ""
+  },
+  {
+      "name": "Improving the Explainability of Artificial Intelligence: The Promises and Limitations of Counterfactual Explanations",
+      "publisher": "UC Berkeley Center for Long-term Cybersecurity",
+      "url": "https://cltc.berkeley.edu/publication/improving-the-explainability-of-artificial-intelligence-the-promises-and-limitations-of-counterfactual-explanations/",
+      "releaseDate": "2024-07-01",
+      "summary": ""
+  }
+  ]
+}

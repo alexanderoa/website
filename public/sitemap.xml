@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://example.org/categories/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/categories/causal-inference/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/tags/cuped/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/categories/estimators/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/blog/cuped/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/tags/regression-adjustment/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/tags/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/categories/variance-reduction/</loc>
+    <lastmod>2025-02-18T20:15:48-08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/resume/</loc>
+    <lastmod>2025-02-18T11:43:18-08:00</lastmod>
+  </url>
+</urlset>
