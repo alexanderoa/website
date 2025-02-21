@@ -1,5 +1,4 @@
 +++
 date = '2025-02-18T11:43:09-08:00'
-draft = true
 title = 'Home'
 +++
