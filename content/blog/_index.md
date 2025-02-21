@@ -1,7 +1,6 @@
 +++
 title = 'Blog'
 date = 2025-02-18T12:18:01-08:00
-draft = true
 
 ## Metadata
 
