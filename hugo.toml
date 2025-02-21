@@ -1,11 +1,11 @@
 baseURL = 'https://alexasemota.netlify.app'
 languageCode = 'en-us'
 title = 'Alex Asemota'
-theme = 'jughead'
+theme = "jughead"
 
 [params]
-subtitle = "Portfolio and blog theme for Hugo."
-description = "Demo site for Jughead, a portfolio and blog theme for Hugo."
+subtitle = ""
+description = "UC Berkeley Stats PhD"
 colourScheme = "blue"
 mainSections = ["blog", "links"]
 math = true
