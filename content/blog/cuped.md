@@ -73,7 +73,7 @@ Now that we've talked about the theory, let's work through a practical example u
 We start by importing the relevant packages and simulating a dataset. 
 
 
-```
+```python
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
@@ -89,12 +89,21 @@ data = cuped_generator(
 )
 ```
 
+| **Treatment** | **Pre-trigger** | **Post-trigger** | **Pre-normalized** |
+| ------------: | --------------: | ---------------: | -----------------: |
+| 1 | 4.924905 | 8.325782 | -0.147397 |
+| 0 | 4.048135 | 5.801409 | -1.024167 |
+| 0 | 5.334973 | 8.425400 | 0.262671  |
+| 0 | 2.902762 | 6.273420 | -2.169539 |
+| 0 | 3.759250 | 5.695983 | -1.313051 |
+| 1 | 3.175777 | 6.914893 | -1.896525 |
+
 In our dataset, we have a ground-truth treatment effect of 0.5. Additionally, we observe 500 units, and each unit has a 50% chance of being assigned to treatment. 
 
 First, let's take a quick peek at our data. 
 
 
-```
+```python
 data.iloc[:6,:]
 ```
 
@@ -106,7 +115,7 @@ data.iloc[:6,:]
 Let's take a look at the estimates from DiM and CUPED. As mentioned above, we can calculated $\hat{\tau}_{diff}$ by regression $Y$ on $T$ with an intercept term. Note that `smf.ols()` automatically adds an intercept to the regression.
 
 
-```
+```python
 reg = smf.ols("Post_trigger ~ Treatment",data).fit()
 reg.get_robustcov_results('HC2').summary(slim=True)
 ```
@@ -120,7 +129,7 @@ $$\tilde{Y}_{post} = Y_{post} - \theta(Y_{pre} - \mathbb{E}[Y_{pre}])$$
 marginalizing out the variance in \(Y_{post}\) attributable to \(Y_{pre}\). Finally, we perform DiM on \(\tilde{Y}_{post}\) by regressing \(\tilde{Y}_{post}\) on \(T\). 
 
 
-```
+```python
 cuped_lm = sm.OLS(
   data['Post_trigger'], 
   data['Pre_normalized']).fit()
@@ -147,7 +156,7 @@ $$Y = \hat{\alpha} + \hat{\tau}_{adj_2} T + \hat{\beta} X + \hat{\gamma} (X-\mat
 which allows \(\hat{\tau}_{adj_2}\) to be unbiased [1]. 
 
 
-```
+```python
 reg_adj = smf.ols(
     formula="Post_trigger ~ Treatment + 
       Pre_trigger + 
@@ -161,7 +170,7 @@ reg_adj.get_robustcov_results('HC2').summary(slim=True)
 Surprisingly, CUPED and regression adjustment return very similar estimates and similar standard errors. To make sure this result isn't just a fluke of random chance, let's simulate a few thousand datasets. In particular, we'll look at the distribution of point estimates for difference-in-means, CUPED, and regression adjustment. If CUPED and regression adjustment perform similarly, we would expect their point estimate distributions to be roughly the same. 
 
 
-```
+```python
 n = 10000
 sample_size = 500
 simple, cuped, adjust = many_cuped_sims(n_sims=n)
