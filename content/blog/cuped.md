@@ -44,13 +44,15 @@ A natural estimator of the ATE is
 $$\hat{\tau}_{diff} = \frac{1}{n_t}\sum_{i=1}^nY_iT_i - \frac{1}{n_c}\sum_{i=1}^nY_i(1-T_i)$$
 where we take the difference in the observed average outcome between treatment and control. Equivalently, we can use a linear regression of the form
 $$Y = \hat{\alpha} + \hat{\tau}_{reg} T$$
-to obtain \(\hat{\tau}_{diff}=\hat{\tau}_{reg}\). This estimator, referred to as the difference-in-means (DiM) method, is compelling in its simplicity. However, DiM does not provide any mechanism for reducing variance, instead requiring more data to reduce uncertainty. In most experiments, we have some information that is related to the outcome. If that information is independent of the treatment assignment, we can use it to reduce uncertainty in our estimate. For example, in a clinical trial, a patient's age may be related to their risk of disease. When performing our analysis, we want to account for the relationship between age and disease risk to maximize efficiency.
+
+to obtain $\hat{\tau}_{reg}=\hat{\tau}_{diff}$. This estimator, referred to as the difference-in-means (DiM) method, is compelling in its simplicity. However, DiM does not provide any mechanism for reducing variance, instead requiring more data to reduce uncertainty. In most experiments, we have some information that is related to the outcome. If that information is independent of the treatment assignment, we can use it to reduce uncertainty in our estimate. For example, in a clinical trial, a patient's age may be related to their risk of disease. When performing our analysis, we want to account for the relationship between age and disease risk to maximize efficiency.
 
 ### Simple Yet Powerful: CUPED
 Here is where CUPED comes to the rescue. Suppose we have some variable $X$ that we've measured before the experiment begins. In the simplest terms, CUPED subtracts out the variance in $Y$ that can be explained by $X$, thereby reducing variance in our estimates. $X$ here is referred to as a *control variate*. Given a control variate $X$, we define $\tilde{Y} = Y - \theta(X-\mathbb{E}[X])$, where $\theta$ is any constant. We then apply DiM to $\tilde{Y}$:
 
 $$\hat{\tau}_{cv} =  \frac{1}{n_t}\sum_{i=1}^n\tilde{Y}_iT_i - \frac{1}{n_c}\sum_{i=1}^n\tilde{Y}_i(1-T_i)$$
-The resulting estimator \(\hat{\tau}_{cv}\) is an unbiased estimator with \(var(\hat{\tau}_{cv}) \leq var(\hat{\tau}_{diff})\).
+The resulting estimator $\hat{\tau}_{cv}$ is an unbiased estimator with
+$var(\hat{\tau}_{cv}) \leq var(\hat{\tau}_{diff})$.
 
 This feels a little too easy, right? We get reduced variance by just subtracting something from $Y$? That's part of the beauty of CUPED! The theory is simple to understand as well. 
 
@@ -89,15 +91,6 @@ data = cuped_generator(
 )
 ```
 
-| **Treatment** | **Pre-trigger** | **Post-trigger** | **Pre-normalized** |
-| ------------: | --------------: | ---------------: | -----------------: |
-| 1 | 4.924905 | 8.325782 | -0.147397 |
-| 0 | 4.048135 | 5.801409 | -1.024167 |
-| 0 | 5.334973 | 8.425400 | 0.262671  |
-| 0 | 2.902762 | 6.273420 | -2.169539 |
-| 0 | 3.759250 | 5.695983 | -1.313051 |
-| 1 | 3.175777 | 6.914893 | -1.896525 |
-
 In our dataset, we have a ground-truth treatment effect of 0.5. Additionally, we observe 500 units, and each unit has a 50% chance of being assigned to treatment. 
 
 First, let's take a quick peek at our data. 
@@ -106,7 +99,14 @@ First, let's take a quick peek at our data.
 ```python
 data.iloc[:6,:]
 ```
-
+| **Treatment** | **Pre-trigger** | **Post-trigger** | **Pre-normalized** |
+| ------------: | --------------: | ---------------: | -----------------: |
+| 1 | 4.924905 | 8.325782 | -0.147397 |
+| 0 | 4.048135 | 5.801409 | -1.024167 |
+| 0 | 5.334973 | 8.425400 | 0.262671  |
+| 0 | 2.902762 | 6.273420 | -2.169539 |
+| 0 | 3.759250 | 5.695983 | -1.313051 |
+| 1 | 3.175777 | 6.914893 | -1.896525 |
 
 
 
@@ -119,14 +119,19 @@ Let's take a look at the estimates from DiM and CUPED. As mentioned above, we ca
 reg = smf.ols("Post_trigger ~ Treatment",data).fit()
 reg.get_robustcov_results('HC2').summary(slim=True)
 ```
-
+|           | Coefficient | Estimated SE | p-value | [0.025 | 0.975] |
+| --------- | ----------- | ------------ | ------- | ------ | ------ |
+| Intercept | 8.0120      | 3.105        | 0.000   | 7.752  | 8.272  |
+| Treatment | 0.6232      | 0.201        | 0.002   | 0.229  | 1.018  |
 
 
 The DiM estimate isn't far off, and the p-value is quite smaller that 0.05. So DiM would seem to suffice in this scenario!
 
-Next, let's take a look at CUPED. For \(\hat{\tau}_{cv}\), we first regress \(Y_{post}\) on \(Y_{pre} - \mathbb{E}[Y_{pre}]\) to obtain the optimal \(\theta\). Then, we calculate 
+Next, let's take a look at CUPED. For $\hat{\tau}_{cv}$, we first regress $Y_{post}$ on $Y_{pre} - \mathbb{E}[Y_{pre}]$ to obtain the optimal $\theta$. Then, we calculate 
+
 $$\tilde{Y}_{post} = Y_{post} - \theta(Y_{pre} - \mathbb{E}[Y_{pre}])$$
-marginalizing out the variance in \(Y_{post}\) attributable to \(Y_{pre}\). Finally, we perform DiM on \(\tilde{Y}_{post}\) by regressing \(\tilde{Y}_{post}\) on \(T\). 
+
+marginalizing out the variance in $Y_{post}$ attributable to $Y_{pre}$. Finally, we perform DiM on $\tilde{Y}_{post}$ by regressing $\tilde{Y}_{post}$ on $T$. 
 
 
 ```python
@@ -140,7 +145,10 @@ cuped_reg = smf.ols("Post_cuped ~ Treatment", data).fit()
 cuped_reg.get_robustcov_results('HC2').summary(slim=True)
 ```
 
-
+|           | Coefficient | Estimated SE | p-value | [0.025 | 0.975] |
+| --------- | ----------- | ------------ | ------- | ------ | ------ |
+| Intercept | 8.0540      | 0.065        | 0.000   | 7.927  | 8.181  |
+| Treatment | *0.5357*    | *0.093*      | 0.000   | 0.353  | 0.718  |
 
 
 We can see that the standard error in CUPED is roughly half that of DiM! The CUPED confidence interval is half the length of the DiM confidence interval. These are huge gains for such a low-cost and simple method. 
@@ -153,7 +161,7 @@ Regression adjustment is the classical way of adjusting for additional variables
 $$Y = \hat{\alpha} + \hat{\tau}_{adj_1} T + \hat{\beta} X$$
 \(\hat{\tau}_{adj_1}\), however, can be biased in some circumstances, particularly when the probability of treatment is not \(\frac{1}{2}\).  Instead, it is more theoretically appropriate to include an interaction term between the treatment indicator and mean-centered \(X\):
 $$Y = \hat{\alpha} + \hat{\tau}_{adj_2} T + \hat{\beta} X + \hat{\gamma} (X-\mathbb{E}[X])*T$$
-which allows \(\hat{\tau}_{adj_2}\) to be unbiased [1]. 
+which allows $\hat{\tau}_{adj_2}$ to be unbiased [1]. 
 
 
 ```python
