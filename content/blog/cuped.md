@@ -122,7 +122,7 @@ reg.get_robustcov_results('HC2').summary(slim=True)
 |           | Coefficient | Estimated SE | p-value | [0.025 | 0.975] |
 | --------- | ----------- | ------------ | ------- | ------ | ------ |
 | Intercept | 8.0120      | 3.105        | 0.000   | 7.752  | 8.272  |
-| Treatment | 0.6232      | 0.201        | 0.002   | 0.229  | 1.018  |
+| Treatment | **0.6232**  | **0.201**    | 0.002   | 0.229  | 1.018  |
 
 
 The DiM estimate isn't far off, and the p-value is quite smaller that 0.05. So DiM would seem to suffice in this scenario!
@@ -148,7 +148,7 @@ cuped_reg.get_robustcov_results('HC2').summary(slim=True)
 |           | Coefficient | Estimated SE | p-value | [0.025 | 0.975] |
 | --------- | ----------- | ------------ | ------- | ------ | ------ |
 | Intercept | 8.0540      | 0.065        | 0.000   | 7.927  | 8.181  |
-| Treatment | *0.5357*    | *0.093*      | 0.000   | 0.353  | 0.718  |
+| Treatment | **0.5357**  | **0.093**    | 0.000   | 0.353  | 0.718  |
 
 
 We can see that the standard error in CUPED is roughly half that of DiM! The CUPED confidence interval is half the length of the DiM confidence interval. These are huge gains for such a low-cost and simple method. 
@@ -172,7 +172,12 @@ reg_adj = smf.ols(
     data=data).fit()
 reg_adj.get_robustcov_results('HC2').summary(slim=True)
 ```
-
+|           | Coefficient | Estimated SE | p-value | [0.025 | 0.975] |
+| --------- | ----------- | ------------ | ------- | ------ | ------ |
+| Intercept | 8.0532      | 0.065        | 0.000   | 7.927  | 8.181  |
+| Treatment | **0.5360**  | **0.093**    | 0.000   | 0.353  | 0.719  |
+| Pre-normalized | 0.9568 | 0.033        | 0.000   | 0.893  | 1.021  |
+| Treatment:Pre-normalized | 0.0303 | 0.045 | 0.497 | -0.057 | 0.118 |
 
 
 Surprisingly, CUPED and regression adjustment return very similar estimates and similar standard errors. To make sure this result isn't just a fluke of random chance, let's simulate a few thousand datasets. In particular, we'll look at the distribution of point estimates for difference-in-means, CUPED, and regression adjustment. If CUPED and regression adjustment perform similarly, we would expect their point estimate distributions to be roughly the same. 
