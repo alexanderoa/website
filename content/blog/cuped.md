@@ -41,8 +41,11 @@ In causal inference, the most common quantity of interest is the *average treatm
 ### The Default: Difference-in-Means
 
 A natural estimator of the ATE is
+
 $$\hat{\tau}_{diff} = \frac{1}{n_t}\sum_{i=1}^nY_iT_i - \frac{1}{n_c}\sum_{i=1}^nY_i(1-T_i)$$
+
 where we take the difference in the observed average outcome between treatment and control. Equivalently, we can use a linear regression of the form
+
 $$Y = \hat{\alpha} + \hat{\tau}_{reg} T$$
 
 to obtain $\hat{\tau}_{reg}=\hat{\tau}_{diff}$. This estimator, referred to as the difference-in-means (DiM) method, is compelling in its simplicity. However, DiM does not provide any mechanism for reducing variance, instead requiring more data to reduce uncertainty. In most experiments, we have some information that is related to the outcome. If that information is independent of the treatment assignment, we can use it to reduce uncertainty in our estimate. For example, in a clinical trial, a patient's age may be related to their risk of disease. When performing our analysis, we want to account for the relationship between age and disease risk to maximize efficiency.
